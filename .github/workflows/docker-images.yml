@@ -1,8 +1,13 @@
 name: Publish Docker image
 
+#on:
+#  release:
+#    types: [published]
+
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - '*'
 
 jobs:
   push_to_registry:
@@ -36,7 +41,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: pgvector:${GITHUB_REF_NAME} 
+          tags: pgvector:${{ env.GITHUB_REF_NAME }} 
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Generate artifact attestation
